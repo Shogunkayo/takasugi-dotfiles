@@ -14,7 +14,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 -- Autostart ------------------------------------------------------------
-awful.util.spawn("picom")
+awful.util.spawn("picom --animations -b")
 awful.spawn.with_shell("sh ~/.screenlayout/default.sh")
 
 local function run_once(cmd_arr)

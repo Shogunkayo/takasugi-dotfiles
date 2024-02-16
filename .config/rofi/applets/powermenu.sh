@@ -15,7 +15,7 @@ theme='powermenu'
 
 # CMDs
 uptime="`uptime -p | sed -e 's/up //g'`"
-host=`hostname`
+host=`cat /etc/hostname`
 
 # Options
 shutdown=''
