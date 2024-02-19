@@ -10,14 +10,15 @@ export VISUAL="nvim"
 export GOPATH="~/github/go"
 
 clone() {
-	git -C ~/github clone $1 && cd "$(basename "$_" .git)"
+	git -C ~/github clone $1 && cd ~/github/"$(basename "$_" .git)"
 }
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias pes='su PES1UG21CS206 && cd'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias nv='nvim'
 
-PS1='[\u@\h \W]\$ '
+PS1='\W \$ '
 
 eval "$(zoxide init --cmd cd bash)"

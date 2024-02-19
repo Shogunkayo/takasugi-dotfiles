@@ -150,11 +150,6 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 -- Key bindings ---------------------------------------------------------
 
 globalkeys = mytable.join(
-	-- Destroy all notifications
-    awful.key({ "Control",           }, "space", function() naughty.destroy_all_notifications() end,
-              {description = "destroy all notifications", group = "hotkeys"}),
-	
-
     -- Show/hide wibox
     awful.key({ modkey }, "b", function ()
             for s in screen do

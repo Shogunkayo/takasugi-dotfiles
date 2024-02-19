@@ -9,6 +9,18 @@ set cleaner ctpvclear
 # custom functions
 cmd setwallpaper %cp "$f" ~/.config/wall.jpg && xwallpaper --zoom "$f"
 
+cmd mkdir %{{
+    printf " Directory Name: "
+    read ans
+    mkdir $ans
+}}
+
+cmd mkfile %{{
+    printf " File Name: "
+    read ans
+    $EDITOR $ans
+}}
+
 cmd unarchive ${{
 	case "$f" in
 		*.zip) unzip "$f" ;;
@@ -20,7 +32,7 @@ cmd unarchive ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find . -type d \( -path ./.cache -o -path ./.ssh -o -path ./.w3m -o -path ./.minikube -o -path ./.pki -o -path ./.local -o -path ./.icons -o -path ./.config/vivaldi -o -path ./.config/pacmixer -o -path ./.config/'Docker Desktop' -o -path ./.config/systemd -o -path ./.config/flameshot -o -path ./.config/pulse -o -path ./.gtk-3.0 -o -path ./.inkscape -o -path ./.ctpv -o -path ./go -o -path ./yay-bin -o -path ./.config/awesome -o -path ./github -o -path ./.docker -o -name node_modules -o -name .git \) -prune -o -name '*' -print  | fzf --reverse --header='Jump to location')"
+    res="$(find ~/ -type d \( -path ~/.cfg -o -name cache -o -path ~/.cache -o -path ~/.ssh -o -path ~/.w3m -o -path ~/.minikube -o -path ~/.pki -o -name local -o -path ~/.local -o -path ~/.icons -o -path ~/.config/vivaldi -o -path ~/.config/pacmixer -o -path ~/.config/'Docker Desktop' -o -path ~/.config/systemd -o -path ~/.config/flameshot -o -path ~/.config/pulse -o -path ~/.gtk-3.0 -o -path ~/.inkscape -o -path ~/.config/discord -o -path ~/.ctpv -o -path ~/go -o -path ~/yay-bin -o -path ~/.config/awesome -o -path ~/github -o -path ~/.docker -o -name node_modules -o -name .git \) -prune -o -name '*' -print  | fzf --reverse --header='Jump to location')"
     if [ -n "$res" ]; then
         if [ -d "$res" ]; then
             cmd="cd"
@@ -43,6 +55,23 @@ cmd fzf_search ${{
     [ -n "$res" ] && lf -remote "send $id select \"$res\""
 }}
 
+# bash
+
+cmd z %{{
+	result="$(zoxide query --exclude $PWD $@ | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+cmd zi ${{
+	result="$(zoxide query -i | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+cmd on-cd &{{
+        zoxide add "$PWD"
+}}
+
+
 # remove default bindings
 map m
 map o
@@ -63,5 +92,7 @@ map e $$EDITOR $f
 
 map bg setwallpaper
 map au unarchive
-map <c-f> :fzf_jump
+map <c-o> :fzf_jump
 map gs :fzf_search
+map md mkdir
+map mf mkfile
