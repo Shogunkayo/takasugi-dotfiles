@@ -31,4 +31,3 @@ set.undofile = true
 set.incsearch = true
 
 vim.g.lf_command_override = 'lf -command "set hidden"'
-

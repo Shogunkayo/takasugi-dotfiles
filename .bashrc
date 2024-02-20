@@ -18,6 +18,7 @@ alias grep='grep --color=auto'
 alias pes='su PES1UG21CS206 && cd'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias nv='nvim'
+alias ff="fastfetch"
 
 PS1='\W \$ '
 

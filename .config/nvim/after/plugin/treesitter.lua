@@ -19,3 +19,7 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+vim.api.nvim_exec([[
+    hi @punctuation.bracket guifg=#A9ADA3
+]], false)
