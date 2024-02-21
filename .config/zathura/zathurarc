@@ -1,6 +1,5 @@
 set default-bg "#3A3B41"
 set default-fg "#F7EFDE"
-set font "Caskaydia Cove Nerd Font 10"
 
 set statusbar-bg "#404c51"
 set statusbar-fg "#F7EFDE"

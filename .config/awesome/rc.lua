@@ -56,9 +56,9 @@ end
 local terminal = "kitty"
 local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor
-local filemanager = "thunar"
+local filemanager = "lf"
 local modkey = "Mod1"
-local browser      = "librewolf"
+local browser      = "vivaldi"
 
 local themes = {
     "blackburn",       -- 1
@@ -82,8 +82,7 @@ awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4", "5" }
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.fair,
-    awful.layout.suit.spiral,
+    awful.layout.suit.fair
 }
 
 awful.util.taglist_buttons = mytable.join(
@@ -189,9 +188,6 @@ globalkeys = mytable.join(
             {description = "open flameshot gui", group="flameshot"}),
     awful.key({ modkey, "Shift"}, "f", function () awful.spawn.with_shell("flameshot full") end,
             {description = "capture entire screen", group="flameshot"}),
-
-
-    -- Screen brightness
 
     -- Screen brightness
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
