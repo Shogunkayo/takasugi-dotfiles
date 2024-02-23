@@ -1,14 +1,12 @@
-pcall(require, "luarrocks.loader")
+pcall(require, "luarocks.loader")
 
 gears = require("gears")
 awful = require("awful")
-naughty = require("naught")
+naughty = require("naughty")
 beautiful = require("beautiful")
-mytable = awful.util.table or gears.table
 
---- Defaults
 terminal = "kitty"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
-modkey = "Mod1"
 
+modkey = "Mod1"
