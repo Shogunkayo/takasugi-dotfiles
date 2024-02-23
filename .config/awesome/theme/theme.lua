@@ -11,6 +11,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 local naughty = require("naughty")
+local markup = lain.util.markup
 
 local math, string, os = math, string, os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -35,6 +36,8 @@ lspace1.forced_height = dpi(18)
 lspace2.forced_height = dpi(10)
 lspace3.forced_height = dpi(16)
 
+local space3 = markup.font("Roboto 3", " ")
+
 local theme                                     = {}
 
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/theme"
@@ -44,7 +47,7 @@ theme.useless_gap                               = 5
 
 theme.font                                      = "JetBrainsMono Nerd Font Mono Regular 12"
 theme.fg_normal                                 = "#F7EFDE"
-theme.fg_focus                                  = "#32D6FF"
+theme.fg_focus                                  = "#3A3B41"
 theme.fg_urgent                                 = "#F7EFDE"
 theme.bg_normal                                 = "#3A3B41"
 theme.bg_focus                                  = "#A2B674"
@@ -87,7 +90,7 @@ theme.bat080                                    = theme.icon_dir .. "/bat-080.pn
 theme.bat100charging                            = theme.icon_dir .. "/bat-100-charging.png"
 theme.bat100                                    = theme.icon_dir .. "/bat-100.png"
 theme.batcharged                                = theme.icon_dir .. "/bat-charged.png"
-theme.ethon                                     = theme.icon_dir .. "/ethernet-connected.png"
+theme.ethon                                     = theme.icon_dir .. "/ethernet.png"
 theme.ethoff                                    = theme.icon_dir .. "/ethernet-disconnected.png"
 theme.volhigh                                   = theme.icon_dir .. "/volume-high.png"
 theme.vollow                                    = theme.icon_dir .. "/volume-low.png"
@@ -102,17 +105,20 @@ theme.wifilow                                   = theme.icon_dir .. "/wireless-l
 theme.wifimed                                   = theme.icon_dir .. "/wireless-medium.png"
 theme.wifinone                                  = theme.icon_dir .. "/wireless-none.png"
 
-local markup = lain.util.markup
+
+-- Clock
+local mytextclock = wibox.widget.textclock(markup(theme.fg_focus, space3 .. "%H:%M   " .. markup.font("Roboto 4", " ")))
+mytextclock.font = theme.font
 
 -- Calendar
- 
+local mytextcalendar = wibox.widget.textclock(markup.fontfg(theme.font, "#FFFFFF", space3 .. "%d %b " .. markup.font("Roboto 5", " ")))
 theme.cal = lain.widget.cal({
-    --cal = "cal --color=always",
-    -- attach_to = { binclock.widget },
+    attach_to = { mytextclock, mytextcalendar },
     notification_preset = {
-        font = "Terminus 10",
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
+        fg = theme.fg_normal,
+        bg = theme.bg_normal,
+        position = "top_right",
+        font = "Monospace 10"
     }
 })
 
@@ -198,9 +204,9 @@ local bat = lain.widget.bat({
     end
 })
 
--- ALSA volume
+-- Pulse volume
 local volicon = wibox.widget.imagebox()
-theme.volume = lain.widget.pulsebar({
+theme.volume = lain.widget.pulse({
     --togglechannel = "IEC958,3",
     notification_preset = { font = "Monospace 12", fg = theme.fg_normal },
     settings = function()
@@ -224,25 +230,18 @@ theme.volume = lain.widget.pulsebar({
     end
 })
 volicon:buttons(my_table.join (
-          awful.button({}, 1, function()
-            awful.spawn(string.format("%s -e alsamixer", awful.util.terminal))
-          end),
-          awful.button({}, 2, function()
-            os.execute(string.format("%s set %s 100%%", theme.volume.cmd, theme.volume.channel))
-            theme.volume.notify()
-          end),
-          awful.button({}, 3, function()
-            os.execute(string.format("%s set %s toggle", theme.volume.cmd, theme.volume.togglechannel or theme.volume.channel))
-            theme.volume.notify()
-          end),
-          awful.button({}, 4, function()
-            os.execute(string.format("%s set %s 1%%+", theme.volume.cmd, theme.volume.channel))
-            theme.volume.notify()
-          end),
-          awful.button({}, 5, function()
-            os.execute(string.format("%s set %s 1%%-", theme.volume.cmd, theme.volume.channel))
-            theme.volume.notify()
-          end)
+    awful.button({}, 1, function() -- left click
+        awful.spawn("kitty -e pacmixer")
+    end),
+    awful.button({}, 3, function() -- right click
+        os.execute("pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    end),
+    awful.button({}, 4, function() -- scroll up
+        os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%%")
+    end),
+    awful.button({}, 5, function() -- scroll down
+        os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%%")
+    end)
 ))
 
 -- Wifi carrier and signal strength
@@ -252,30 +251,47 @@ local mywifisig = awful.widget.watch(
     { awful.util.shell, "-c", "awk 'NR==3 {printf(\"%d-%.0f\\n\",$2, $3*10/7)}' /proc/net/wireless; iw dev wlan0 link" },
     2,
     function(widget, stdout)
-        local carrier, perc = stdout:match("(%d)-(%d+)")
-        perc = tonumber(perc)
+        if not isEthernet then
+            local carrier, perc = stdout:match("(%d)-(%d+)")
+            perc = tonumber(perc)
 
-        if carrier == "1" or not perc then
-            wificon:set_image(theme.wifidisc)
-        else
-            if perc <= 5 then
-                wificon:set_image(theme.wifinone)
-            elseif perc <= 25 then
-                wificon:set_image(theme.wifilow)
-            elseif perc <= 50 then
-                wificon:set_image(theme.wifimed)
-            elseif perc <= 75 then
-                wificon:set_image(theme.wifihigh)
+            if carrier == "1" or not perc then
+                wificon:set_image(theme.wifidisc)
             else
-                wificon:set_image(theme.wififull)
+                if perc <= 5 then
+                    wificon:set_image(theme.wifinone)
+                elseif perc <= 25 then
+                    wificon:set_image(theme.wifilow)
+                elseif perc <= 50 then
+                    wificon:set_image(theme.wifimed)
+                elseif perc <= 75 then
+                    wificon:set_image(theme.wifihigh)
+                else
+                    wificon:set_image(theme.wififull)
+                end
             end
         end
     end
 )
+
+local ethersig = awful.widget.watch(
+    'bash -c "ip route | grep enp2s0 | wc -l"',
+    2,
+    function (widget, stdout)
+        local isether = tonumber(stdout)
+        if isether < 1 then
+            isEthernet = false
+        else
+            isEthernet = true
+            wificon:set_image(theme.ethon)
+        end
+    end
+)
+
 wificon:connect_signal("button::press", function(lx, ly, unknown, button, find_widgets_result)
     if button == 1 then
         awful.spawn("kitty -e nmtui")
-    else
+    elseif isEthernet == false then
         awful.spawn(string.format("%s -e wavemon", awful.util.terminal))
     end
 end)
@@ -321,7 +337,7 @@ function theme.at_screen_connect(s)
         bg = theme.bg_normal,
         fg = theme.fg_normal,
         margins = {
-            top = 5,
+            top = 0,
             left = 14,
             right = 14,
             bottom = 0
@@ -335,7 +351,6 @@ function theme.at_screen_connect(s)
         {
             layout = wibox.layout.fixed.horizontal,
             wibox.container.background(wibox.container.margin(mpd_widget, dpi(3), dpi(6)), theme.widget_bg_3),
-            l_space1
         },
         {
             layout = wibox.layout.fixed.horizontal,
@@ -345,9 +360,10 @@ function theme.at_screen_connect(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             rspace1,
-            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_4),
-            wibox.container.background(wibox.container.margin(volicon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_2),
+            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_2),
+            wibox.container.background(wibox.container.margin(volicon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_4),
             wibox.container.background(wibox.container.margin(baticon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_3),
+            wibox.container.background(wibox.container.margin(mytextclock, dpi(20), dpi(20), dpi(7), dpi(3)), theme.widget_bg_1),
         },
     }
 end
