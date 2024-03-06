@@ -32,7 +32,7 @@ cmd unarchive ${{
 }}
 
 cmd fzf_jump ${{
-    res="$(find ~/ -type d \( -path ~/.cfg -o -name cache -o -path ~/.cache -o -path ~/.ssh -o -path ~/.w3m -o -path ~/.minikube -o -path ~/.pki -o -name local -o -path ~/.local -o -path ~/.icons -o -path ~/.config/vivaldi -o -path ~/.config/pacmixer -o -path ~/.config/'Docker Desktop' -o -path ~/.config/systemd -o -path ~/.config/flameshot -o -path ~/.config/pulse -o -path ~/.gtk-3.0 -o -path ~/.inkscape -o -path ~/.config/discord -o -path ~/.ctpv -o -path ~/go -o -path ~/yay-bin -o -path ~/.config/awesome -o -path ~/github -o -path ~/.docker -o -name node_modules -o -name .git \) -prune -o -name '*' -print  | fzf --reverse --header='Jump to location')"
+    res="$(find ~/ -type d \( -path ~/.cfg -o -name cache -o -path ~/.cache -o -path ~/.ssh -o -path ~/.w3m -o -path ~/.minikube -o -path ~/.pki -o -name local -o -path ~/.local -o -path ~/.icons -o -path ~/.config/vivaldi -o -path ~/.config/pacmixer -o -path ~/.config/'Docker Desktop' -o -path ~/.config/systemd -o -path ~/.config/flameshot -o -path ~/.config/pulse -o -path ~/.gtk-3.0 -o -path ~/.inkscape -o -path ~/.config/discord -o -path ~/.ctpv -o -path ~/go -o -path ~/yay-bin -o -path ~/github -o -path ~/.docker -o -name node_modules -o -name .git \) -prune -o -name '*' -print  | fzf --reverse --header='Jump to location')"
     if [ -n "$res" ]; then
         if [ -d "$res" ]; then
             cmd="cd"

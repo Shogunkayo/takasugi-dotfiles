@@ -107,7 +107,7 @@ theme.wifinone                                  = theme.icon_dir .. "/wireless-n
 
 
 -- Clock
-local mytextclock = wibox.widget.textclock(markup(theme.fg_focus, space3 .. "%H:%M   " .. markup.font("Roboto 4", " ")))
+local mytextclock = wibox.widget.textclock(markup("#494B52", space3 .. "%H : %M" .. markup.font("Roboto 4", " ")))
 mytextclock.font = theme.font
 
 -- Calendar
@@ -206,15 +206,28 @@ local bat = lain.widget.bat({
 
 -- Pulse volume
 local volicon = wibox.widget.imagebox()
-theme.volume = lain.widget.pulse({
-    --togglechannel = "IEC958,3",
-    notification_preset = { font = "Monospace 12", fg = theme.fg_normal },
-    settings = function()
-        local index, perc = "", tonumber(volume_now.level) or 0
+local voltooltip = awful.tooltip({
+    objects = { volicon },
+    margin_leftright = dpi(20),
+    margin_topbottom = dpi(20),
+    fg = theme.fg_normal,
+    bg = theme.bg_normal,
+    opacity = 1.0,
+    border_width = 2,
+    border_color = theme.bg_focus,
+    font = theme.font,
+    shape = gears.shape.rounded_rect,
+})
+local volume = awful.widget.watch(
+    'bash -c "pacmd list-sinks | grep -e volume -e muted"',
+    1,
+    function(widget, stdout)
+        local index = ""
+        -- assuming volume in both left and right will be same
+        local perc = tonumber(stdout:match("(%d+)%%"))
+        local isMuted = stdout:match("muted: (%a+)")
 
-        if volume_now.status == "off" then
-            index = "volmutedblocked"
-        else
+        if isMuted == "no" then
             if perc <= 5 then
                 index = "volmuted"
             elseif perc <= 25 then
@@ -224,11 +237,16 @@ theme.volume = lain.widget.pulse({
             else
                 index = "volhigh"
             end
+            voltooltip:set_markup(string.format("Volume: %d%%", perc))
+        else
+            index = "volmutedblocked"
+            voltooltip:set_markup(string.format("Volume: Muted"))
         end
-
         volicon:set_image(theme[index])
+
     end
-})
+)
+
 volicon:buttons(my_table.join (
     awful.button({}, 1, function() -- left click
         awful.spawn("kitty -e pacmixer")
@@ -237,10 +255,10 @@ volicon:buttons(my_table.join (
         os.execute("pactl set-sink-mute @DEFAULT_SINK@ toggle")
     end),
     awful.button({}, 4, function() -- scroll up
-        os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%%")
+        os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%")
     end),
     awful.button({}, 5, function() -- scroll down
-        os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%%")
+        os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%")
     end)
 ))
 

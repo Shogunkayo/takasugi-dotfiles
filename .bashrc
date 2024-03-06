@@ -19,6 +19,7 @@ alias pes='su PES1UG21CS206 && cd'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias nv='nvim'
 alias ff="fastfetch"
+alias yt="~/code/bash_scripts/youtube.sh"
 
 PS1='\W \$ '
 

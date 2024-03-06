@@ -22,14 +22,14 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "kitty" })
-
 -- Error ----------------------------------------------------------------
 if awesome.startup_errors then
     naughty.notify {
-        preset = naughty.config.presets.critical,
         title = "Oops, there were errors during startup!",
-        text = awesome.startup_errors
+        text = awesome.startup_errors,
+        bg = beautiful.bg_urgent,
+        fg = beautiful.fg_urgent,
+        border_color = beautiful.bg_urgent
     }
 end
 
@@ -42,9 +42,11 @@ do
         in_error = true
 
         naughty.notify {
-            preset = naughty.config.presets.critical,
             title = "Oops, an error happened!",
-            text = tostring(err)
+            text = tostring(err),
+            bg = beautiful.bg_urgent,
+            fg = beautiful.fg_urgent,
+            border_color = beautiful.bg_urgent
         }
 
         in_error = false
@@ -367,7 +369,28 @@ globalkeys = gears.table.join(
             awful.spawn.with_shell("flameshot gui")
         end,
         {description = "open flameshot gui", group = "flameshot"}
-    )
+    ),
+
+    -- Send a test notification
+    -- info at https://awesomewm.org/doc/api/libraries/naughty.html#notify
+    awful.key({ modkey, "Shift"   }, "t", function ()
+        --[[ local notif_icon = gears.surface.load_uncached(
+                           gears.filesystem.get_configuration_dir() .. "path/to/icon") ]]
+        naughty.notify({
+            -- screen = 1,
+            -- timeout = 0,-- in seconds
+            -- ignore_suspend = true,-- if true notif shows even if notifs are suspended via naughty.suspend
+            -- fg = "#ff0",
+            -- bg = "#ff0000",
+            title = "Test Title",
+            text = "Test Notification",
+            -- icon = gears.color.recolor_image(notif_icon, "#ff0"),
+            -- icon_size = 24,-- in px
+            -- border_color = "#ffff00",
+            -- border_width = 2,
+        })
+    end,
+        {description = "send test notification", group = "awesome"})
 )
 
 clientkeys = gears.table.join(
