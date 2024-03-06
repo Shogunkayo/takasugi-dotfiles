@@ -67,6 +67,9 @@ theme.taglist_fg_focus                          = "#494B52"
 theme.taglist_bg_urgent                         = "#906262"
 theme.taglist_fg_urgent                         = "#F7EFDE"
 
+theme.taglist_squares_sel                       = theme.icon_dir .. "/square_sel.png"
+theme.taglist_squares_unsel                     = theme.icon_dir .. "/square_unsel.png"
+
 theme.widget_bg_1                               = "#EBD6AE"
 theme.widget_bg_2                               = "#A9AD83"
 theme.widget_bg_3                               = "#648B96"
@@ -128,10 +131,6 @@ local mpdicon = wibox.widget.imagebox(theme.widget_music)
 mpdicon:buttons(my_table.join(
     awful.button({ modkey }, 1, function () awful.spawn.with_shell(musicplr) end),
     awful.button({ }, 1, function ()
-        os.execute("mpc prev")
-        theme.mpd.update()
-    end),
-    awful.button({ }, 2, function ()
         os.execute("mpc toggle")
         theme.mpd.update()
     end),
@@ -147,7 +146,7 @@ theme.mpd = lain.widget.mpd({
             mpdicon:set_image(theme.widget_music_on)
             widget:set_markup(markup.font(theme.font, markup("#FF8466", artist) .. " " .. title))
         elseif mpd_now.state == "pause" then
-            widget:set_markup(markup.font(theme.font, " mpd paused "))
+            widget:set_markup(markup.font(theme.font, " paused "))
             mpdicon:set_image(theme.widget_music_pause)
         else
             widget:set_text("")

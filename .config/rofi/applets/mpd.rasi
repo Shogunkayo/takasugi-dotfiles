@@ -65,7 +65,7 @@ container {
 /*****----- Imagebox -----*****/
 imagebox {
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/mpdbg.jpg", height);
+    background-image:            url("~/.config/rofi/images/mpdbg.png", height);
 }
 
 /*****----- Inputbar -----*****/

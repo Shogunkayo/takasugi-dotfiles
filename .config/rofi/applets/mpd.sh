@@ -16,7 +16,7 @@ if [[ -z "$status" ]]; then
 	mesg="MPD is Offline"
 else
 	prompt="`mpc -f "%artist%" current`"
-	mesg="`mpc -f "%title%" current` :: `mpc status | grep "#" | awk '{print $3}'`"
+	mesg="`mpc -f "%title%" current | cut -c 1-27`"
 fi
 
 list_col='1'
@@ -73,7 +73,7 @@ rofi_cmd() {
 	rofi -theme-str "listview {columns: $list_col; lines: $list_row;}" \
 		-theme-str 'textbox-prompt-colon {str: "";}' \
 		-dmenu \
-		-p "$prompt" \
+		-p "$prompt-$mesg" \
 		-mesg "$mesg" \
 		${active} ${urgent} \
 		-markup-rows \
@@ -88,13 +88,13 @@ run_rofi() {
 # Execute Command
 run_cmd() {
 	if [[ "$1" == '--opt1' ]]; then
-		mpc -q toggle && notify-send-rs -u low -t 1000 " `mpc current`"
+		mpc -q toggle
 	elif [[ "$1" == '--opt2' ]]; then
 		mpc -q stop
 	elif [[ "$1" == '--opt3' ]]; then
-		mpc -q prev && notify-send-rs -u low -t 1000 " `mpc current`"
+		mpc -q prev
 	elif [[ "$1" == '--opt4' ]]; then
-		mpc -q next && notify-send-rs -u low -t 1000 " `mpc current`"
+		mpc -q next
 	elif [[ "$1" == '--opt5' ]]; then
 		mpc -q repeat
 	elif [[ "$1" == '--opt6' ]]; then

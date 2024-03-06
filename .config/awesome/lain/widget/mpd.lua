@@ -28,7 +28,7 @@ local function factory(args)
     local port          = args.port or os.getenv("MPD_PORT") or "6600"
     local music_dir     = args.music_dir or os.getenv("HOME") .. "/Music"
     local cover_pattern = args.cover_pattern or "*\\.(jpg|jpeg|png|gif)$"
-    local cover_size    = args.cover_size or 100
+    local cover_size    = args.cover_size or 300
     local default_art   = args.default_art
     local notify        = args.notify or "on"
     local followtag     = args.followtag or false
@@ -38,7 +38,7 @@ local function factory(args)
     local echo = string.format("printf \"%sstatus\\ncurrentsong\\nclose\\n\"", password)
     local cmd  = string.format("%s | curl --connect-timeout 1 -fsm 3 %s", echo, mpdh)
 
-    mpd_notification_preset = { title = "Now playing", timeout = 6 }
+    mpd_notification_preset = { title = "Now playing", timeout = 3}
 
     helpers.set_map("current mpd track", nil)
 
@@ -89,8 +89,7 @@ local function factory(args)
                 end
             end
 
-            mpd_notification_preset.text = string.format("%s (%s) - %s\n%s", mpd_now.artist,
-                                           mpd_now.album, mpd_now.date, mpd_now.title)
+            mpd_notification_preset.text = string.format("Artist: %s\nTitle: %s", mpd_now.artist, mpd_now.title)
             widget = mpd.widget
             settings()
 
@@ -102,9 +101,10 @@ local function factory(args)
 
                     local common =  {
                         preset      = mpd_notification_preset,
-                        icon        = default_art,
+                        image       = "/home/pYr0/.config/rofi/images/mpdbg.png",
                         icon_size   = cover_size,
-                        replaces_id = mpd.id
+                        replaces_id = mpd.id,
+                        position = "top_middle"
                     }
 
                     if not string.match(mpd_now.file, "http.*://") then -- local file instead of http stream

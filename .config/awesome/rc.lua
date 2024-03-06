@@ -371,6 +371,31 @@ globalkeys = gears.table.join(
         {description = "open flameshot gui", group = "flameshot"}
     ),
 
+    awful.key({ modkey }, "n",
+        function()
+            awful.spawn("mpc next")
+        end,
+        {deescription = "play next song", group = "mpd"}
+    ),
+    awful.key({ modkey }, "p",
+        function()
+            awful.spawn("mpc prev")
+        end,
+        {description = "play prev song", group = "mpd"}
+    ),
+    awful.key({ modkey, "Control" }, "p",
+        function()
+            awful.spawn("mpc toggle")
+        end,
+        {description = "toggle play/pause", group = "mpd"}
+    ),
+    awful.key({ modkey, "Shift" }, "n",
+        function()
+            awful.spawn.with_shell(string.format("%s -e ncmpcpp", terminal))
+        end,
+        {description = "open ncmpcpp", group = "terminal"}
+    ),
+
     -- Send a test notification
     -- info at https://awesomewm.org/doc/api/libraries/naughty.html#notify
     awful.key({ modkey, "Shift"   }, "t", function ()
@@ -399,6 +424,13 @@ clientkeys = gears.table.join(
             c:kill()
         end,
         {description = "close client", group = "client"}
+    ),
+
+    awful.key({ modkey }, "]",
+        function(c)
+            c.minimized = true
+        end,
+        {description = "minimize client", group = "client"}
     ),
 
     awful.key({ modkey }, "Return",
