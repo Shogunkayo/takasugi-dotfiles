@@ -1,0 +1,56 @@
+# maps
+set zoom-step 5
+map <A-n> set nohlsearch
+map <C-n> zoom out
+map <C-m> zoom in
+
+# misc settings
+set window-title-home-tilde true
+set selection-clipboard clipboard
+set incremental-search "true"
+set font "JetBrainsMono NF"
+set adjust-open "width"
+set window-title-basename "true"
+set statusbar-basename "true"
+
+# color
+set default-bg "#3A3B41"
+set default-fg "#ECEFF4"
+
+set statusbar-bg "#404c51"
+set statusbar-fg "#ECEFF4"
+set statusbar-basename true
+
+set inputbar-bg "#3A3B41"
+set inputbar-fg "#ECEFF4"
+
+set index-bg "#3A3B41"
+set index-fg "#ECEFF4"
+set index-active-bg "#a7c080"
+set index-active-fg "#2b3339"
+
+set completion-bg "#3A3B41"
+set completion-fg "#ECEFF4"
+set completion-group-bg "#3A3B41"
+set completion-group-fg "#7fbbb3"
+set completion-highlight-bg "#a7c080"
+set completion-highlight-fg "#2b3339"
+
+set notification-bg "#3A3B41"
+set notification-fg "#ECEFF4"
+set notification-error-bg "#e68183"
+set notification-error-fg "#2b3339"
+set notification-warning-bg "#e68183"
+set notification-warning-fg "#2b3339"
+
+set highlight-color "#a7c080"
+set highlight-active-color "#7fbbb3"
+set highlight-transparency 0.35
+
+set recolor-lightcolor "#3A3B41"
+set recolor-darkcolor "#ECEFF4"
+set recolor-keephue "true"
+set recolor "true"
+
+set render-loading-bg "#3A3B41"
+set render-loading-fg "#ECEFF4"

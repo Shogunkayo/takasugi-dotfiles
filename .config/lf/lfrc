@@ -1,0 +1,98 @@
+# set cleaner ~/.config/lf/lf_kitty_clean
+# set previewer ~/.config/lf/lf_kitty_preview
+
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id
+
+# custom functions
+cmd setwallpaper %cp "$f" ~/.config/wall.jpg && xwallpaper --zoom "$f"
+
+cmd mkdir %{{
+    printf " Directory Name: "
+    read ans
+    mkdir $ans
+}}
+
+cmd mkfile %{{
+    printf " File Name: "
+    read ans
+    touch $ans
+}}
+
+cmd unarchive ${{
+	case "$f" in
+		*.zip) unzip "$f" ;;
+		*.tar.gz) tar -xzvf "$f" ;;
+		*.tar.bz2) tar -xjvf "$f" ;;
+		*.tar) tar -xvf "$f" ;;
+		*) echo "i dunno how 2 xtract" ;;
+	esac
+}}
+
+cmd fzf_jump ${{
+    res="$(find ~/ -type d \( -path ~/.cfg -o -name cache -o -path ~/.cache -o -path ~/.ssh -o -path ~/.w3m -o -path ~/.minikube -o -path ~/.pki -o -name local -o -path ~/.local -o -path ~/.icons -o -path ~/.config/vivaldi -o -path ~/.config/pacmixer -o -path ~/.config/'Docker Desktop' -o -path ~/.config/systemd -o -path ~/.config/flameshot -o -path ~/.config/pulse -o -path ~/.gtk-3.0 -o -path ~/.inkscape -o -path ~/.config/discord -o -path ~/.ctpv -o -path ~/go -o -path ~/yay-bin -o -path ~/github -o -path ~/.docker -o -name node_modules -o -name .git -o -path ~/.cargo -o -path ~/downloads/yay-bin -o -path ~/downloads/takasugi-dotfiles -o -path ~/.npm \) -prune -o -name '*' -print  | fzf --reverse --header='Jump to location')"
+    if [ -n "$res" ]; then
+        if [ -d "$res" ]; then
+            cmd="cd"
+        else
+            cmd="select"
+        fi
+        res="$(printf '%s' "$res" | sed 's/\\/\\\\/g;s/"/\\"/g')"
+        lf -remote "send $id $cmd \"$res\""
+    fi
+}}
+
+cmd fzf_search ${{
+    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+    res="$(
+        FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
+            fzf --bind "change:reload:$RG_PREFIX {q} || true" \
+            --ansi --layout=reverse --header 'Search in files' \
+            | cut -d':' -f1 | sed 's/\\/\\\\/g;s/"/\\"/g'
+    )"
+    [ -n "$res" ] && lf -remote "send $id select \"$res\""
+}}
+
+# bash
+
+cmd z %{{
+	result="$(zoxide query --exclude $PWD $@ | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+cmd zi ${{
+	result="$(zoxide query -i | sed 's/\\/\\\\/g;s/"/\\"/g')"
+	lf -remote "send $id cd \"$result\""
+}}
+
+cmd on-cd &{{
+        zoxide add "$PWD"
+}}
+
+
+# remove default bindings
+map m
+map o
+map n
+map "'"
+map '"'
+map d
+
+# set bindings
+map . set hidden!
+map DD delete
+map p paste
+map x cut
+map y copy
+map <enter> open
+map R reload
+map e $$EDITOR $f
+
+map bg setwallpaper
+map au unarchive
+map <c-o> :fzf_jump
+map gs :fzf_search
+map md mkdir
+map mf mkfile
