@@ -1,6 +1,6 @@
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(user)
+return require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 
 	use {
@@ -9,6 +9,7 @@ return require('packer').startup(function(user)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
+    --[[
 	use({
 		"neanias/everforest-nvim",
   		-- Optional; default configuration will be used if setup isn't called.
@@ -16,7 +17,12 @@ return require('packer').startup(function(user)
     			require("everforest").setup()
   		end,
 	})
-	
+    ]]
+
+    use "lifepillar/vim-colortemplate"
+    use "aktersnurra/no-clown-fiesta.nvim"
+    -- use "RRethy/base16-nvim"
+
 	use {
   		'nvim-lualine/lualine.nvim',
   		requires = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -54,8 +60,8 @@ return require('packer').startup(function(user)
     }
 
     use 'christoomey/vim-tmux-navigator'
-    
+
     use 'ptzz/lf.vim'
     use 'voldikss/vim-floaterm'
-    
+
 end)

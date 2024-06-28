@@ -1,6 +1,6 @@
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "rust", "cpp", "bash", "cuda", "gitignore", "gitcommit", "http", "java", "json", "make", "markdown", "query"},
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "rust", "cpp", "bash", "cuda", "gitignore", "gitcommit", "http", "java", "json", "make", "markdown", "query"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -19,7 +19,3 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-
-vim.api.nvim_exec([[
-    hi @punctuation.bracket guifg=#A9ADA3
-]], false)
