@@ -28,6 +28,10 @@ require('mason-lspconfig').setup({
 	}
 })
 
+vim.diagnostic.config({
+  virtual_text = false,
+})
+
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}

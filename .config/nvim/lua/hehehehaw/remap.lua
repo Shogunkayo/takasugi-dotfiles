@@ -17,7 +17,7 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<C-o>", builtin.find_files, {})
+vim.keymap.set("n", "<C-f>", builtin.find_files, {})
 vim.keymap.set("n", "<leader>gg", builtin.live_grep, {})
 vim.keymap.set("n", "<C-p>", builtin.git_files, {})
 

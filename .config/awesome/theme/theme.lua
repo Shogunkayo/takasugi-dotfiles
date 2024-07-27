@@ -62,7 +62,7 @@ theme.taglist_border                            = 10
 theme.taglist_font                              = "JetBrainsMono Nerd Font Mono Regular 19"
 theme.taglist_shape_focus                       = gears.shape.rounded_rect
 theme.taglist_shape_urgent                      = gears.shape.rounded_rect
-theme.taglist_bg_focus                          = "#dabaa1"
+theme.taglist_bg_focus                          = "#f6b573"
 theme.taglist_fg_focus                          = "#34353a"
 theme.taglist_bg_urgent                         = "#93130f"
 theme.taglist_fg_urgent                         = "#d6d6d6"
@@ -70,9 +70,9 @@ theme.taglist_fg_urgent                         = "#d6d6d6"
 theme.taglist_squares_sel                       = theme.icon_dir .. "/square_sel.png"
 theme.taglist_squares_unsel                     = theme.icon_dir .. "/square_unsel.png"
 
-theme.widget_bg_1                               = "#7aaad1"
-theme.widget_bg_2                               = "#dabaa1"
-theme.widget_bg_3                               = "#67b07d"
+theme.widget_bg_blue                            = "#7aaad1"
+theme.widget_bg_orange                          = "#f6b573"
+theme.widget_bg_cyan                            = "#67b07d"
 
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
@@ -143,9 +143,9 @@ theme.mpd = lain.widget.mpd({
             artist = " " .. mpd_now.artist .. " "
             title  = mpd_now.title  .. " "
             mpdicon:set_image(theme.widget_music_on)
-            widget:set_markup(markup.font(theme.font, markup("#FF8466", artist) .. " " .. title))
+            widget:set_markup(markup.font(theme.font, markup(theme.bg_focus, artist) .. " " .. title))
         elseif mpd_now.state == "pause" then
-            widget:set_markup(markup.font(theme.font, " paused "))
+            widget:set_markup(markup.font(theme.font, markup(theme.bg_focus, " paused ")))
             mpdicon:set_image(theme.widget_music_pause)
         else
             widget:set_text("")
@@ -191,7 +191,6 @@ local bat = lain.widget.bat({
         end
 
         baticon:set_image(theme[index])
-        
         if bat_now.status == "Full" then
             battooltip:set_markup(string.format("Fully Charged"))
         elseif bat_now.ac_status == 1 then
@@ -366,7 +365,7 @@ function theme.at_screen_connect(s)
         expand = "none",
         {
             layout = wibox.layout.fixed.horizontal,
-            wibox.container.background(wibox.container.margin(mpd_widget, dpi(3), dpi(6)), theme.widget_bg_3),
+            wibox.container.background(wibox.container.margin(mpd_widget, dpi(3), dpi(6)), theme.bg_normal),
         },
         {
             layout = wibox.layout.fixed.horizontal,
@@ -376,9 +375,9 @@ function theme.at_screen_connect(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             rspace1,
-            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_2),
-            wibox.container.background(wibox.container.margin(baticon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_3),
-            wibox.container.background(wibox.container.margin(mytextclock, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_1),
+            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_orange),
+            wibox.container.background(wibox.container.margin(baticon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_cyan),
+            wibox.container.background(wibox.container.margin(mytextclock, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_blue),
         },
     }
 end
