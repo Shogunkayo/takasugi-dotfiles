@@ -73,7 +73,7 @@ rofi_cmd() {
 	rofi -theme-str "listview {columns: $list_col; lines: $list_row;}" \
 		-theme-str 'textbox-prompt-colon {str: "";}' \
 		-dmenu \
-		-p "$prompt-$mesg" \
+		-p "$mesg" \
 		-mesg "$mesg" \
 		${active} ${urgent} \
 		-markup-rows \

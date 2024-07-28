@@ -15,6 +15,7 @@ local lain          = require("lain")
 -- Autostart ------------------------------------------------------------
 awful.spawn("picom")
 awful.spawn.with_shell("sh ~/.screenlayout/default.sh")
+awful.spawn.with_shell("sh ~/scripts/mpd_rofi.sh")
 
 local function run_once(cmd_arr)
     for _, cmd in ipairs(cmd_arr) do

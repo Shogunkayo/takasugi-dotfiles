@@ -58,7 +58,7 @@ container {
 /*****----- Imagebox -----*****/
 imagebox {
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/mpdbg.png", height);
+    background-image:            url("~/.config/rofi/images/mpdbg.png", BOTH);
 }
 
 /*****----- Inputbar -----*****/
@@ -86,7 +86,7 @@ prompt {
     padding:                     10px;
     border-radius:               0px;
     background-color:            @active;
-    text-color:                  @foreground;
+    text-color:                  @background;
 }
 
 /*****----- Message -----*****/
@@ -159,5 +159,5 @@ element selected.urgent {
 }
 element selected.normal {
     background-color:            var(selected);
-    text-color:                  var(foreground);
+    text-color:                  var(background);
 }
