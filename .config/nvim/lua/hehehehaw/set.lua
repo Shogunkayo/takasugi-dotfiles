@@ -31,3 +31,9 @@ set.undofile = true
 set.incsearch = true
 
 vim.g.lf_command_override = 'lf -command "set hidden"'
+set.laststatus = 3
+vim.o.guicursor = table.concat({
+  "n-v-c:block",
+  "i-ci:block/lCursor-blinkwait1000-blinkon100-blinkoff100",
+  "r:hor50/lCursor-blinkwait100-blinkon100-blinkoff100"
+}, ",")

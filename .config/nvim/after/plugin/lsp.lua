@@ -52,7 +52,7 @@ cmp.setup({
   	mapping = cmp.mapping.preset.insert({
     		['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     		['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    		['<C-cr>'] = cmp.mapping.confirm({ select = true }),
+    		['<C-e>'] = cmp.mapping.confirm({ select = true }),
     		['<C-Space>'] = cmp.mapping.complete(),
 
     ["<Tab>"] = cmp.mapping(function(fallback)
@@ -75,11 +75,4 @@ cmp.setup({
       end
     end, { "i", "s" }),
   	}),
-})
-
--- Disable semantic highlight groups to avoid conflicts with treesitter
-lsp_zero.set_server_config({
-  on_init = function(client)
-    client.server_capabilities.semanticTokensProvider = nil
-  end,
 })

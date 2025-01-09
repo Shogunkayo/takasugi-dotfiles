@@ -53,8 +53,8 @@ theme.bg_normal                                 = "#242528"
 theme.bg_focus                                  = "#84ce80"
 theme.bg_urgent                                 = "#93130f"
 theme.border_width                              = 2
-theme.border_normal                             = "#8f7d70"
-theme.border_focus                              = "#8db8ae"
+theme.border_normal                             = "#f6b573"
+theme.border_focus                              = "#84ce80"
 theme.border_marked                             = "#f6b573"
 
 theme.taglist_spacing                           = 20
@@ -73,6 +73,7 @@ theme.taglist_squares_unsel                     = theme.icon_dir .. "/square_uns
 theme.widget_bg_blue                            = "#7aaad1"
 theme.widget_bg_orange                          = "#f6b573"
 theme.widget_bg_cyan                            = "#67b07d"
+theme.widget_bg_black                           = "#34353a"
 
 theme.widget_music                              = theme.dir .. "/icons/note.png"
 theme.widget_music_on                           = theme.dir .. "/icons/note_on.png"
@@ -365,7 +366,7 @@ function theme.at_screen_connect(s)
         expand = "none",
         {
             layout = wibox.layout.fixed.horizontal,
-            wibox.container.background(wibox.container.margin(mpd_widget, dpi(3), dpi(6)), theme.bg_normal),
+            wibox.container.background(wibox.container.margin(mpd_widget, dpi(3), dpi(6)), theme.bg_black),
         },
         {
             layout = wibox.layout.fixed.horizontal,
@@ -375,9 +376,9 @@ function theme.at_screen_connect(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             rspace1,
-            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_orange),
-            wibox.container.background(wibox.container.margin(baticon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_cyan),
-            wibox.container.background(wibox.container.margin(mytextclock, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_blue),
+            wibox.container.background(wibox.container.margin(wificon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_black),
+            wibox.container.background(wibox.container.margin(baticon, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_black),
+            wibox.container.background(wibox.container.margin(mytextclock, dpi(20), dpi(20), dpi(3), dpi(3)), theme.widget_bg_cyan),
         },
     }
 end

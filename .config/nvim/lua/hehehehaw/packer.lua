@@ -63,5 +63,15 @@ return require('packer').startup(function(use)
 
     use 'ptzz/lf.vim'
     use 'voldikss/vim-floaterm'
+    use {'nyoom-engineering/oxocarbon.nvim'}
+    use {"ntk148v/komau.vim"}
+    use 'RRethy/base16-nvim'
+    use "EdenEast/nightfox.nvim"
+    use "ayu-theme/ayu-vim"
+    use 'Yazeed1s/minimal.nvim'
+    use "preservim/vim-colors-pencil"
+    use "p00f/alabaster.nvim"
+    use "habamax/vim-habamax"
+    use "kxzk/skull-vim"
 
 end)
