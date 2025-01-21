@@ -1,32 +1,41 @@
 function ColorMyPencils(color)
-	color = color or "no-clown-fiesta"
+	-- color = color or "no-clown-fiesta"
+    color = color or "skull"
 	vim.cmd.colorscheme(color)
 
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none"})
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none"})
+	vim.api.nvim_set_hl(0, "NormalFloat", {
+        bg = "none"
+    })
+
+    vim.api.nvim_set_hl(0, "Function", {
+        fg = "#a67768",
+    })
+
+    vim.api.nvim_set_hl(0, "Special", {
+        fg = "#f9cc9e",
+    })
+
+    vim.api.nvim_set_hl(0, "String", {
+        fg = "#8dc48a",
+    })
+
+    vim.api.nvim_set_hl(0, "Comment", {
+        fg = "#5e6a5e",
+    })
+
+    vim.api.nvim_set_hl(0, "Foreground", {
+        fg = "#bfbfbf",
+    })
+
+    vim.api.nvim_set_hl(0, "@variable", {
+        link = "Foreground",
+    })
+
+    vim.api.nvim_set_hl(0, "@punctuation", {
+        link = "Foreground"
+    })
 
 end
-
-ColorMyPencils()
-
-vim.cmd("colorscheme skull")
-
-
-vim.api.nvim_set_hl(0, "Function", {
-    fg = "#f6b573",
-})
-
-vim.api.nvim_set_hl(0, "Special", {
-    fg = "#f6b573",
-})
-
-vim.api.nvim_set_hl(0, "String", {
-    fg = "#84ce80",
-})
-
-vim.api.nvim_set_hl(0, "Comment", {
-    fg = "#29772d",
-})
 
 require('lualine').setup {
   options = {
@@ -69,3 +78,6 @@ require('lualine').setup {
   inactive_winbar = {},
   extensions = {}
 }
+
+ColorMyPencils()
+
